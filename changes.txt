@@ -1,0 +1,4 @@
+Version 0.1
+October 2, 2006
+
+	Initial Release
