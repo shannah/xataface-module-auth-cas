@@ -126,9 +126,9 @@ class dataface_modules_cas {
 				$url = $_REQUEST['-redirect'];
 				//header('Location: '.$_REQUEST['-redirect']);
 				//exit;
-			} else if ( isset($_SESSION['-redirect']) ){
-				$url = $_SESSION['-redirect'];
-				unset($_SESSION['-redirect']);
+			} else if ( isset($_SESSION['--redirect']) ){
+				$url = $_SESSION['--redirect'];
+				unset($_SESSION['--redirect']);
 			} else {
 				$url = $app->url('');
 				//$url = $_SERVER['HOST_URI'].DATAFACE_SITE_HREF.'?';
