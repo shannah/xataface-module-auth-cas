@@ -133,6 +133,7 @@ class dataface_modules_cas {
 				$url = $app->url('');
 				//$url = $_SERVER['HOST_URI'].DATAFACE_SITE_HREF.'?';
 			}
+			if ( @$app->_conf['using_default_action'] ) $url = preg_replace('/&?-action=[^&]*/','', $url);
 			// Now we forward to the homepage:
 			header('Location: '.$url.'&--msg='.urlencode('You are now logged in'));
 			exit;
