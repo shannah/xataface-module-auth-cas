@@ -164,7 +164,7 @@ class dataface_modules_cas {
 		if ( $record === 0 ){
 			$auth =& Dataface_AuthenticationTool::getInstance();
 			$record = df_get_record($auth->usersTable, array($auth->usernameColumn=>'='.$this->getLoggedInUsername()));
-			if ( !isset($record) or $record->val($auth->usernameColumn) ){
+			if ( !isset($record) or !$record->val($auth->usernameColumn) ){
 				$record = new Dataface_Record($auth->usersTable, array($auth->usernameColumn=>$this->getLoggedInUsername()));
 			}
 			//print_r($record->strvals());exit;
