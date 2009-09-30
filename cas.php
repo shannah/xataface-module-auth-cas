@@ -121,7 +121,15 @@ class dataface_modules_cas {
 			$_SESSION['UserName'] = phpCAS::getUser();
 			//echo "Session: ".$_SESSION['UserName'];
 			//exit;
-			
+			$query =& $app->getQuery();
+			if ( $query['-action'] != 'login' ){
+				if ( isset($_SERVER['REQUEST_URI'] )) $url = df_absolute_url($_SERVER['REQUEST_URI']);
+				else if ( isset($_SERVER['SCRIPT_URI'] ) ) $url = df_absolute_url($_SERVER['SCRIPT_URI']).'?'.$_SERVER['QUERY_STRING'];
+				if ( isset($url) ){ 
+					header("Location: $url");
+					exit;
+				}
+			}
 			if ( isset( $_REQUEST['-redirect'] ) and !empty($_REQUEST['-redirect']) ){
 				$url = $_REQUEST['-redirect'];
 				//header('Location: '.$_REQUEST['-redirect']);
