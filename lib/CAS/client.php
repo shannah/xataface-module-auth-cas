@@ -475,7 +475,7 @@ class CASClient
 
       // activate session mechanism if desired
       if ($start_session) {
-           session_start();
+           @session_start();
       }
 
       $this->_proxy = $proxy;

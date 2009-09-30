@@ -429,7 +429,7 @@ class phpCAS
       global $PHPCAS_DEBUG;
 
       if ( $PHPCAS_DEBUG['filename'] ) {
-	for ($i=0;$i<$PHPCAS_DEBUG['indent'];$i++) {
+	for ($i=0;$i<@$PHPCAS_DEBUG['indent'];$i++) {
 	  $indent_str .= '|    ';
 	}
 	error_log($PHPCAS_DEBUG['unique_id'].' '.$indent_str.$str."\n",3,$PHPCAS_DEBUG['filename']);
@@ -500,7 +500,7 @@ class phpCAS
       }
       $str .= ') ['.basename($dbg[2]['file']).':'.$dbg[2]['line'].']';
       phpCAS::log($str);
-      $PHPCAS_DEBUG['indent'] ++;
+      @$PHPCAS_DEBUG['indent'] ++;
     }
 
   /**

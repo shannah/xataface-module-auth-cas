@@ -156,13 +156,16 @@ class dataface_modules_cas {
 	 * Returns the Dataface_Record for the currently logged in user.
 	 */
 	function &getLoggedInUser(){
-		if ( !@$_SESSION['UserName'] ) return null;
+		if ( !@$_SESSION['UserName'] ){
+			$null = null;
+			return $null;
+		}
 		static $record = 0;
 		if ( $record === 0 ){
 			$auth =& Dataface_AuthenticationTool::getInstance();
 			$record = df_get_record($auth->usersTable, array($auth->usernameColumn=>'='.$this->getLoggedInUsername()));
-			if ( !isset($record) or $record->val($this->usernameColumn) ){
-				$record = new Dataface_Record($auth->usersTable, array($this->usernameColumn=>$this->getLoggedInUsername()));
+			if ( !isset($record) or $record->val($auth->usernameColumn) ){
+				$record = new Dataface_Record($auth->usersTable, array($auth->usernameColumn=>$this->getLoggedInUsername()));
 			}
 			//print_r($record->strvals());exit;
 		}
