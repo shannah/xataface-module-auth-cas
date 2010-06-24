@@ -77,10 +77,12 @@ class dataface_modules_cas {
 			trigger_error("The URL \"$url\" specified for the CAS server in the conf.ini file is invalid.  Please enter a valid url similar to http://domain.com/path/to/service.",E_USER_ERROR);
 		}
 		$host = $url_parts['host'];
+		if ( !$host ) $host = $_SERVER['HTTP_HOST'];
 		$port = ( @$url_parts['port'] ? $url_parts['port'] : 443);
+		if ( !preg_match('#^/#', $url_parts['path']) ) $url_parts['path'] = dirname($_SERVER['PHP_SELF']).'/'.$url_parts['path'];
 		$uri = (@$url_parts['path'] ? $url_parts['path'] : '');
 		
-		phpCAS::client(CAS_VERSION_2_0,$host,$port,$uri);
+		phpCAS::client(CAS_VERSION_1_0,$host,$port,$uri);
 	
 	
 	}
