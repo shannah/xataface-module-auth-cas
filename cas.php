@@ -121,6 +121,7 @@ class dataface_modules_cas {
 			// If we are this far, then the login worked..  We will store the 
 			// userid in the session.
 			$_SESSION['UserName'] = phpCAS::getUser();
+			$this->afterLogin();
 			//echo "Session: ".$_SESSION['UserName'];
 			//exit;
 			$query =& $app->getQuery();
@@ -150,6 +151,14 @@ class dataface_modules_cas {
 		}
 		
 	
+	
+	}
+	
+	/**
+	 * To be overridden by subclasses.  This method is called just after the username 
+	 * is added to the session.
+	 */
+	function afterLogin(){
 	
 	}
 	
