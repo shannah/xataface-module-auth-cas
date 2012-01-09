@@ -77,12 +77,10 @@ class dataface_modules_cas {
 			trigger_error("The URL \"$url\" specified for the CAS server in the conf.ini file is invalid.  Please enter a valid url similar to http://domain.com/path/to/service.",E_USER_ERROR);
 		}
 		$host = $url_parts['host'];
-		if ( !$host ) $host = $_SERVER['HTTP_HOST'];
 		$port = ( @$url_parts['port'] ? $url_parts['port'] : 443);
-		if ( !preg_match('#^/#', $url_parts['path']) ) $url_parts['path'] = dirname($_SERVER['PHP_SELF']).'/'.$url_parts['path'];
 		$uri = (@$url_parts['path'] ? $url_parts['path'] : '');
 		
-		phpCAS::client(CAS_VERSION_1_0,$host,$port,$uri);
+		phpCAS::client(CAS_VERSION_2_0,$host,$port,$uri);
 	
 	
 	}
@@ -110,18 +108,21 @@ class dataface_modules_cas {
 				// forward to the current page again now that we are logged out
 				exit;
 			}
-		
+			
+		$app->startSession();
+
 		if ( !@$_SESSION['UserName'] ){
 			
 			
 			// force CAS authentication
+			
+	
 			$res = phpCAS::forceAuthentication();
 			
 			
 			// If we are this far, then the login worked..  We will store the 
 			// userid in the session.
 			$_SESSION['UserName'] = phpCAS::getUser();
-			$this->afterLogin();
 			//echo "Session: ".$_SESSION['UserName'];
 			//exit;
 			$query =& $app->getQuery();
@@ -148,17 +149,12 @@ class dataface_modules_cas {
 			// Now we forward to the homepage:
 			header('Location: '.$url.'&--msg='.urlencode('You are now logged in'));
 			exit;
+		} else {
+		
+			echo "Session username is set but we still asked for the login prompt";
 		}
 		
 	
-	
-	}
-	
-	/**
-	 * To be overridden by subclasses.  This method is called just after the username 
-	 * is added to the session.
-	 */
-	function afterLogin(){
 	
 	}
 	
