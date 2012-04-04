@@ -80,7 +80,12 @@ class dataface_modules_cas {
 		$port = ( @$url_parts['port'] ? $url_parts['port'] : 443);
 		$uri = (@$url_parts['path'] ? $url_parts['path'] : '');
 		
-		phpCAS::client(CAS_VERSION_2_0,$host,$port,$uri);
+		$version = CAS_VERSION_2_0;
+		if ( @$app->_conf['_auth']['cas_version'] and preg_match('/^1/', $app->_conf['_auth']['cas_version']) ){
+			$version = CAS_VERSION_1_0;
+		}
+		
+		phpCAS::client($version,$host,$port,$uri);
 	
 	
 	}
@@ -116,7 +121,6 @@ class dataface_modules_cas {
 			
 			// force CAS authentication
 			
-	
 			$res = phpCAS::forceAuthentication();
 			
 			

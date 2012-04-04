@@ -309,6 +309,7 @@ class CASClient
 	  .$this->getServerPort()
 	  .$this->getServerURI();
       }
+      //echo "Base URL is ".$this->_server['base_url'];
       return $this->_server['base_url']; 
     }
 
@@ -698,6 +699,7 @@ class CASClient
 	$res = TRUE;
       } else {
 	// no ticket given, not authenticated
+		
 	phpCAS::trace('no ticket found');
       }
 
