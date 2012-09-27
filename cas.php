@@ -72,10 +72,6 @@ class dataface_modules_cas {
 			trigger_error("No url for the CAS server was specified in the _auth section of the conf.ini file.  Please enter the URL using the 'url' key for the CAS server in the _auth section of the conf.ini file in order to use CAS authentication.", E_USER_ERROR);
 		}
 		$url = $app->_conf['_auth']['url'];
-		
-		// For compatibility with the scaler module we have to disable the cache
-		// if the ticket is set
-		if ( @$_REQUEST['ticket'] ) $app->_conf['nocache'] = 1;
 		$url_parts = parse_url($url);
 		if ( !$url_parts ) {
 			trigger_error("The URL \"$url\" specified for the CAS server in the conf.ini file is invalid.  Please enter a valid url similar to http://domain.com/path/to/service.",E_USER_ERROR);
@@ -89,7 +85,7 @@ class dataface_modules_cas {
 			$version = CAS_VERSION_1_0;
 		}
 		
-		phpCAS::client($version,$host,$port,$uri);
+		phpCAS::client($version,$host,$port,$uri,false);
 	
 	
 	}
