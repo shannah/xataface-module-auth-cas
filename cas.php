@@ -120,8 +120,11 @@ class dataface_modules_cas {
 			
 			
 			// force CAS authentication
-			
-			$res = phpCAS::forceAuthentication();
+			$renew = false;
+			if ( @$app->_conf['_auth']['renew'] ){
+				$renew = true;
+			}
+			$res = phpCAS::forceAuthentication($renew);
 			
 			
 			// If we are this far, then the login worked..  We will store the 

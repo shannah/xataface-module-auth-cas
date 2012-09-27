@@ -67,6 +67,7 @@ class CASClient
    */
   var $_output_header = '';
   
+  
   /**
    * This method prints the header of the HTML output (after filtering). If
    * CASClient::setHTMLHeader() was not used, a default header is output.
@@ -319,7 +320,7 @@ class CASClient
    * @return a URL.
    * @private
    */
-  function getServerLoginURL($gateway=false)
+  function getServerLoginURL($gateway=false, $renew=false)
     { 
       phpCAS::traceBegin();
       // the URL is build only when needed
@@ -329,7 +330,10 @@ class CASClient
         $this->_server['login_url'] .= preg_replace('/&/','%26',$this->getURL());
         if ($gateway) {
           $this->_server['login_url'] .= '&gateway=true';
+        } else if ( $renew ){
+        	$this->_server['login_url'] .= '&renew=true';
         }
+        
       }
       phpCAS::traceEnd($this->_server['login_url']);
       return $this->_server['login_url']; 
@@ -609,7 +613,7 @@ class CASClient
    * @return TRUE when the user is authenticated; otherwise halt.
    * @public
    */
-  function forceAuthentication()
+  function forceAuthentication($renew=false)
     {
       phpCAS::traceBegin();
 
@@ -620,7 +624,7 @@ class CASClient
       } else {
 	    // the user is not authenticated, redirect to the CAS server
         unset($_SESSION['phpCAS']['auth_checked']);
-	    $this->redirectToCas(FALSE/* no gateway */);	
+	    $this->redirectToCas(FALSE/* no gateway */, $renew);	
 	    // never reached
 	    $res = FALSE;
       }
@@ -784,10 +788,10 @@ class CASClient
    * @param $gateway true to check authentication, false to force it
    * @public
    */
-  function redirectToCas($gateway=false)
+  function redirectToCas($gateway=false, $renew=false)
     {
       phpCAS::traceBegin();
-      $cas_url = $this->getServerLoginURL($gateway);
+      $cas_url = $this->getServerLoginURL($gateway, $renew);
       header('Location: '.$cas_url);
       $this->printHTMLHeader($this->getString(CAS_STR_AUTHENTICATION_WANTED));
       printf('<p>'.$this->getString(CAS_STR_SHOULD_HAVE_BEEN_REDIRECTED).'</p>',$cas_url);

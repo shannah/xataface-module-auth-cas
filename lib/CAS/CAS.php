@@ -861,7 +861,7 @@ class phpCAS
    * authenticated. If the user is not authenticated, halt by redirecting to 
    * the CAS server.
    */
-  static function forceAuthentication()
+  static function forceAuthentication($renew=false)
     {
       global $PHPCAS_CLIENT, $PHPCAS_AUTH_CHECK_CALL;
 
@@ -869,9 +869,9 @@ class phpCAS
       if ( !is_object($PHPCAS_CLIENT) ) {
         phpCAS::error('this method should not be called before '.__CLASS__.'::client() or '.__CLASS__.'::proxy()');
       }
-      
-      $auth = $PHPCAS_CLIENT->forceAuthentication();
-
+      //echo "Forcing Auth";exit;
+      $auth = $PHPCAS_CLIENT->forceAuthentication($renew);
+		
       // store where the authentication has been checked and the result
       $dbg = phpCAS::backtrace();
       $PHPCAS_AUTH_CHECK_CALL = array('done' => TRUE,
@@ -882,7 +882,7 @@ class phpCAS
 
       if ( !$auth ) {
         phpCAS::trace('user is not authenticated, redirecting to the CAS server');
-        $PHPCAS_CLIENT->forceAuthentication();
+        $PHPCAS_CLIENT->forceAuthentication($renew);
       } else {
         phpCAS::trace('no need to authenticate (user `'.phpCAS::getUser().'\' is already authenticated)');
       }
