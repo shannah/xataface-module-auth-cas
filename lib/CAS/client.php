@@ -1919,9 +1919,13 @@ class CASClient
 	    $final_uri .= ':';
 	    $final_uri .= $_SERVER['SERVER_PORT'];
 	  }
-
+		//error_log("in getURL() line ".__LINE__.": ".$_SERVER['REQUEST_URI']);
 	  $final_uri .= strtok($_SERVER['REQUEST_URI'],"?");
-	  $cgi_params = '?'.strtok("?");
+	  $parts = explode('?', $_SERVER['REQUEST_URI']);
+	  array_shift($parts);
+	  $parts = implode('%3F', $parts);
+	  //$cgi_params = '?'.strtok("?");
+	  $cgi_params = '?'.$parts;
 	  // remove the ticket if present in the CGI parameters
 	  $cgi_params = preg_replace('/&ticket=[^&]*/','',$cgi_params);
 	  $cgi_params = preg_replace('/\?ticket=[^&;]*/','?',$cgi_params);
@@ -1929,6 +1933,7 @@ class CASClient
 	  $cgi_params = preg_replace('/\?&/','?',$cgi_params);
 	  $cgi_params = preg_replace('/\?$/','',$cgi_params);
 	  $final_uri .= $cgi_params;
+	  //error_log("in getURL() line ".__LINE__.": ".$final_uri);
 	  $this->setURL($final_uri);
     }
     phpCAS::traceEnd($this->_url);
