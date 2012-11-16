@@ -96,9 +96,10 @@ class dataface_modules_cas {
 	 */
 	function showLoginPrompt(){
 		$app =& Dataface_Application::getInstance();
+		$app->_conf['nocache'] = 1;
 		$this->_initCAS();
 		if ( isset( $_REQUEST['-action'] ) and $_REQUEST['-action'] == 'logout' ){
-
+				$app->_conf['nocache'] = 1;
 				// the user has invoked a logout request.
 				session_destroy();
 				
@@ -157,7 +158,7 @@ class dataface_modules_cas {
 			header('Location: '.$url.'&--msg='.urlencode('You are now logged in'));
 			exit;
 		} else {
-		
+			$app->_conf['nocache'] = 1;
 			echo "Session username is set but we still asked for the login prompt";
 		}
 		
@@ -195,6 +196,7 @@ class dataface_modules_cas {
 	}
 	
 	function logout(){
+		Dataface_Application::getInstance()->_conf['nocache'] = 1;
 		$this->_initCAS();
 		$redirect = ( (isset($_REQUEST['-redirect']) and !empty($_REQUEST['-redirect']) )? $_REQUEST['-redirect'] : $_SERVER['HOST_URI'].DATAFACE_SITE_HREF);
 		phpCAS::logout($redirect);
